@@ -1,0 +1,5 @@
+1. Create a Github account or use an existing one
+2. Add SHH key by instruction
+3. Create repo
+4. Create branch
+5. Commit any file to remote repository
