@@ -16,5 +16,6 @@ typedef struct user_data {
 
 void print_user_data(user_data* user);
 user_data get_user_data_from_string(const char* string);
+char* get_string_from_user_data(user_data* user);
 
 #endif /* USER_DATA_H */

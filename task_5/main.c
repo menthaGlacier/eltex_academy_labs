@@ -3,6 +3,7 @@
 #include "user_data.h"
 
 static const char* DEFAULT_FILENAME = "/etc/passwd";
+static const char* DEFAULT_OUTPUT = "passwd";
 static const int BUFFER_SIZE = 2048;
 static const int USERS_AMOUNT_MAX = 100;
 
@@ -13,16 +14,26 @@ void help_message(const char* binary_name) {
 	printf("\t%s <login> <new_login> : change login\n", binary_name);
 }
 
-void get_user_data_by_login(user_data users[], int users_amount,
+user_data* get_user_data_by_login(user_data users[], int users_amount,
 		const char* login) {
 	for (int i = 0; i < users_amount; i++) {
 		if (strcmp(users[i].username, login) == 0) {
-			print_user_data(&users[i]);
-			return;
+			return &users[i];
 		}
 	}
 
-	printf("No user with such login was found\n");
+	puts("No user with such login was found");
+	return NULL;
+}
+
+void write_user_data_to_file(user_data users[], int users_amount) {
+	FILE* output_file = open_file(DEFAULT_OUTPUT, "w");
+
+	for (int i = 0; i < users_amount; i++) {
+		fprintf(output_file, "%s\n", get_string_from_user_data(&users[i]));
+	}
+
+	fclose(output_file);
 }
 
 int main(int argc, char* argv[]) {
@@ -51,10 +62,16 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		get_user_data_by_login(users, users_count, argv[1]);
-
+		print_user_data(get_user_data_by_login(users, users_count, argv[1]));
 	} else if (argc == 3) {
-		printf("WIP\n");
+		user_data* user = get_user_data_by_login(users, users_count, argv[1]);
+		
+		if (!user) {
+			exit(EXIT_FAILURE);
+		}
+
+		user->username = duplicate_string(argv[2]);
+		write_user_data_to_file(users, users_count);
 	}
 
 	fclose(passwd_file);
