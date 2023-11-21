@@ -14,6 +14,7 @@ typedef struct user_data {
 	char* user_shell;
 } user_data;
 
+void free_user_data(user_data* user);
 void print_user_data(user_data* user);
 user_data get_user_data_from_string(const char* string);
 char* get_string_from_user_data(user_data* user);

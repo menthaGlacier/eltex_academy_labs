@@ -70,8 +70,13 @@ int main(int argc, char* argv[]) {
 			exit(EXIT_FAILURE);
 		}
 
+		free(user->username);
 		user->username = duplicate_string(argv[2]);
 		write_user_data_to_file(users, users_count);
+	}
+
+	for (int i = 0; i < users_count; i++) {
+		free_user_data(&users[i]);
 	}
 
 	fclose(passwd_file);
