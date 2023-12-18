@@ -11,6 +11,7 @@ int main() {
 
 	int choice = -1;
 	int index = -1;
+	int input = -1;
 	char buffer[256];
 
 	while (true) {
@@ -18,7 +19,8 @@ int main() {
 		printf("4. Display table\n5. Edit record\n6. Remove record\n");
 		printf("7. Sort by id\n8. Sort by surname\n9. Sort by faculty\n");
 		printf("10. Sort by group\n11. Search by id\n12. Search by surname\n");
-		printf("13. Search by faculty\n14. Search by group\n15. Exit\n");
+		printf("13. Search by faculty\n14. Search by group\n15. Calculate\n");
+		printf("0. - Exit\n");
 
 		printf("> ");
 		scanf("%d", &choice);
@@ -78,8 +80,14 @@ int main() {
 				break;
 			case 11:
 				printf("Enter ID: ");
-				scanf("%d", &index);
-				index = search_record_by_id(table, size, index);
+				scanf("%d", &input);
+				index = search_record_by_id(table, size, input);
+				if (index != -1) {
+					print_record(&table[index]);
+					break;
+				}
+
+				index = search_closest_id(table, size, input);
 				if (index != -1) {
 					print_record(&table[index]);
 				}
@@ -91,6 +99,12 @@ int main() {
 				index = search_record_by_surname(table, size, buffer);
 				if (index != -1) {
 					print_record(&table[index]);
+					break;
+				}
+
+				index = search_closest_surname(table, size, buffer);
+				if (index != -1) {
+					print_record(&table[index]);
 				}
 
 				break;
@@ -98,6 +112,12 @@ int main() {
 				printf("Enter faculty: ");
 				scanf("%s", buffer);
 				index = search_record_by_faculty(table, size, buffer);
+				if (index != -1) {
+					print_record(&table[index]);
+					break;
+				}
+
+				index = search_closest_faculty(table, size, buffer);
 				if (index != -1) {
 					print_record(&table[index]);
 				}
@@ -109,10 +129,22 @@ int main() {
 				index = search_record_by_group(table, size, buffer);
 				if (index != -1) {
 					print_record(&table[index]);
+					break;
+				}
+
+				index = search_closest_group(table, size, buffer);
+				if (index != -1) {
+					print_record(&table[index]);
 				}
 
 				break;
 			case 15:
+				printf("Enter faculty: ");
+				scanf("%s", buffer);
+				calculate(table, size, buffer);
+
+				break;
+			case 0:
 				exit(0);
 		}
 	}

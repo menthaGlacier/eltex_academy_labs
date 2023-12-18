@@ -248,4 +248,16 @@ int search_closest_group(Record table[], int size, const char* target) {
 	return closest_index;
 }
 
+void calculate(Record table[], int size, const char* target) {
+	int counter = 0;
+
+	for (int i = 0; i < size; i++) {
+		if (strcmp(table[i].group, target) == 0) {
+			counter += 1;
+		}
+	}
+
+	printf("There are total of %d students in the %s faculty\n", counter, target);
+}
+
 #endif /* RECORD_H */
